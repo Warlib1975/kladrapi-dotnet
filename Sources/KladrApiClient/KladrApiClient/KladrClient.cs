@@ -179,6 +179,7 @@ namespace KladrApiClient
             }
             //End Andrey Fedorov's code
 
+            //Begin commented by Andrey Fedorov
             //if (values.ContainsKey("regionId"))
             //    parametersToPost += "&regionId=" + values["regionId"];
 
@@ -208,10 +209,12 @@ namespace KladrApiClient
 
             //if (values.ContainsKey("callback"))
             //    parametersToPost += "&callback=" + values["callback"];
+            //End commented by Andrey Fedorov
 
             parametersToPost += "&token=" + _clientToken;
 
-            //parametersToPost += "&key=" + _clientKey;
+            //parametersToPost += "&key=" + _clientKey; //Commented by Andrey Fedorov
+
             //Begin Andrey Fedorov's code
             parametersToPost += String.IsNullOrEmpty(_clientKey) ? string.Empty : "&key=" + _clientKey;
             //End Andrey Fedorov's code
