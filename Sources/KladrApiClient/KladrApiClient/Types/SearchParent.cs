@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 // <copyright file="SearchParent.cs" company="Company">
@@ -76,5 +76,22 @@ namespace KladrApiClient.Types
         /// The short type.
         /// </value>
         public string typeShort { get; set; }
+    
+
+        /// <summary>
+        /// Gets or sets the OKATO.
+        /// </summary>
+        /// <value>
+        /// The short type.
+        /// </value>
+        public string okato { get; set; }  //Added by Andrey Fedorov
+
+        /// <summary>
+        /// Gets or sets the Full Name.
+        /// </summary>
+        /// <value>
+        /// The short type.
+        /// </value>
+        public string fullName { get; set; }  //Added by Andrey Fedorov
     }
 }
