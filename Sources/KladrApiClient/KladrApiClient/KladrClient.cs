@@ -1,4 +1,4 @@
-﻿// <copyright file="KladrClient.cs" company="Company">
+// <copyright file="KladrClient.cs" company="Company">
 //
 //    Copyright (c) 2013, Anton Gubarenko
 //    All rights reserved.
@@ -36,6 +36,10 @@ namespace KladrApiClient
     using System.Globalization;
     using System.Net;
     using System.Runtime.Serialization;
+
+    public enum Commands { regionId, districtId, cityId, streetId, buildingId, query, contentType, withParent, limit, oneString };
+
+    public enum ContentType { city, region , street, district, building };
 
     /// <summary>
     /// Performs operation to get address from Kladr API.
@@ -144,6 +148,22 @@ namespace KladrApiClient
         }
 
         /// <summary>
+        /// Finds the address.
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="callback">The callback.</param>
+        public void FindAddress(Dictionary<Commands, string> parameters, KladrApiCallback callback)
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            foreach (KeyValuePair<Commands, string> param in parameters)
+            {
+                dic.Add(param.Key.ToString(), param.Value);
+            }
+
+            FindAddress(dic, callback);
+        }
+
+        /// <summary>
         /// Creates the parameters string.
         /// </summary>
         /// <param name="values">The values.</param>
@@ -152,38 +172,49 @@ namespace KladrApiClient
         {
             string parametersToPost = string.Empty;
 
-            if (values.ContainsKey("regionId"))
-                parametersToPost += "&regionId=" + values["regionId"];
+            //Begin Andrey Fedorov's code
+            foreach (KeyValuePair<string, string> value in values)
+            {
+                parametersToPost += String.Format("&{0}={1}", value.Key, value.Value);
+            }
+            //End Andrey Fedorov's code
 
-            if (values.ContainsKey("districtId"))
-                parametersToPost += "&districtId=" + values["districtId"];
+            //if (values.ContainsKey("regionId"))
+            //    parametersToPost += "&regionId=" + values["regionId"];
 
-            if (values.ContainsKey("cityId"))
-                parametersToPost += "&cityId=" + values["cityId"];
+            //if (values.ContainsKey("districtId"))
+            //    parametersToPost += "&districtId=" + values["districtId"];
 
-            if (values.ContainsKey("streetId"))
-                parametersToPost += "&streetId=" + values["streetId"];
+            //if (values.ContainsKey("cityId"))
+            //    parametersToPost += "&cityId=" + values["cityId"];
 
-            if (values.ContainsKey("buildingId"))
-                parametersToPost += "&buildingId=" + values["buildingId"];
+            //if (values.ContainsKey("streetId"))
+            //    parametersToPost += "&streetId=" + values["streetId"];
 
-            if (values.ContainsKey("query"))
-                parametersToPost += "&query=" + values["query"];
+            //if (values.ContainsKey("buildingId"))
+            //    parametersToPost += "&buildingId=" + values["buildingId"];
 
-            if (values.ContainsKey("contentType"))
-                parametersToPost += "&contentType=" + values["contentType"];
+            //if (values.ContainsKey("query"))
+            //    parametersToPost += "&query=" + values["query"];
 
-            if (values.ContainsKey("withParent"))
-                parametersToPost += "&withParent=" + values["withParent"];
+            //if (values.ContainsKey("contentType"))
+            //    parametersToPost += "&contentType=" + values["contentType"];
 
-            if (values.ContainsKey("limit"))
-                parametersToPost += "&limit=" + values["limit"];
+            //if (values.ContainsKey("withParent"))
+            //    parametersToPost += "&withParent=" + values["withParent"];
 
-            if (values.ContainsKey("callback"))
-                parametersToPost += "&callback=" + values["callback"];
+            //if (values.ContainsKey("limit"))
+            //    parametersToPost += "&limit=" + values["limit"];
+
+            //if (values.ContainsKey("callback"))
+            //    parametersToPost += "&callback=" + values["callback"];
 
             parametersToPost += "&token=" + _clientToken;
-            parametersToPost += "&key=" + _clientKey;
+
+            //parametersToPost += "&key=" + _clientKey;
+            //Begin Andrey Fedorov's code
+            parametersToPost += String.IsNullOrEmpty(_clientKey) ? string.Empty : "&key=" + _clientKey;
+            //End Andrey Fedorov's code
 
             if (parametersToPost.Length > 1)
                 if (parametersToPost.StartsWith("&"))
